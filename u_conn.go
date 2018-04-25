@@ -299,7 +299,7 @@ func (c *UConn) clientHandshakeWithState(hs *clientHandshakeState) error {
 	cacheKey := clientSessionCacheKey(c.conn.RemoteAddr(), c.config)
 
 	// If sessionCache is set but session itself isn't - try to retrieve session from cache
-	if sessionCache != nil && hs.session != nil {
+	if sessionCache != nil && hs.session == nil {
 		hs.hello.ticketSupported = true
 		// Session resumption is not allowed if renegotiating because
 		// renegotiation is primarily used to allow a client to send a client
