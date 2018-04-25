@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	tls "github.com/Jigsaw-Code/utls"
+	tls "github.com/Psiphon-Labs/utls"
 	"net"
 	"strings"
 	"time"

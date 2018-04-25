@@ -9,7 +9,7 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"github.com/Jigsaw-Code/utls/testenv"
+	"github.com/Psiphon-Labs/utls/testenv"
 	"io"
 	"io/ioutil"
 	"math"

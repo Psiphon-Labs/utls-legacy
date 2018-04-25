@@ -12,7 +12,7 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"github.com/Jigsaw-Code/utls/cipherhw"
+	"github.com/Psiphon-Labs/utls/cipherhw"
 	"io"
 	"math/big"
 	"net"
