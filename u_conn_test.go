@@ -351,6 +351,9 @@ func (test *clientTest) runUTLS(t *testing.T, write bool, helloID ClientHelloID)
 		}
 	}
 
+	// Workaround for test data expecting blank SNI extensions
+	client.IncludeEmptySNI = true
+
 	doneChan := make(chan bool)
 	go func() {
 		defer func() {
