@@ -72,6 +72,7 @@ const (
 	helloFirefox    = "Firefox"
 	helloChrome     = "Chrome"
 	helloAndroid    = "Android"
+	helloiOSSafari  = "iOSSafari"
 )
 
 const (
@@ -101,12 +102,15 @@ var (
 	HelloFirefox_56                 = ClientHelloID{helloFirefox, 56}
 
 	HelloChrome_Auto ClientHelloID = ClientHelloID{helloChrome, helloAutoVers}
+	HelloChrome_57   ClientHelloID = ClientHelloID{helloChrome, 57}
 	HelloChrome_58   ClientHelloID = ClientHelloID{helloChrome, 58}
 	HelloChrome_62   ClientHelloID = ClientHelloID{helloChrome, 62}
 
 	HelloAndroid_Auto        ClientHelloID = ClientHelloID{helloAndroid, helloAutoVers}
 	HelloAndroid_6_0_Browser ClientHelloID = ClientHelloID{helloAndroid, 23}
 	HelloAndroid_5_1_Browser ClientHelloID = ClientHelloID{helloAndroid, 22}
+
+	HelloiOSSafari_11_3_1 ClientHelloID = ClientHelloID{helloiOSSafari, 1131}
 )
 
 // utlsMacSHA384 returns a SHA-384.
@@ -120,23 +124,17 @@ var utlsSupportedCipherSuites []*cipherSuite
 func init() {
 	utlsSupportedSignatureAlgorithms = append(supportedSignatureAlgorithms,
 		[]signatureAndHash{{disabledHashSHA512, signatureRSA}, {disabledHashSHA512, signatureECDSA}}...)
+
 	utlsSupportedCipherSuites = append(cipherSuites, []*cipherSuite{
 		{OLD_TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, 32, 0, 12, ecdheRSAKA,
 			suiteECDHE | suiteTLS12 | suiteDefaultOff, nil, nil, aeadChaCha20Poly1305},
 		{OLD_TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, 32, 0, 12, ecdheECDSAKA,
 			suiteECDHE | suiteECDSA | suiteTLS12 | suiteDefaultOff, nil, nil, aeadChaCha20Poly1305},
-	}...)
-}
 
-// EnableWeakCiphers allows utls connections to continue in some cases, when weak cipher was chosen.
-// This provides better compatibility with servers on the web, but weakens security. Feel free
-// to use this option if you establish additional secure connection inside of utls connection.
-// This option does not change the shape of parrots (i.e. same ciphers will be offered either way).
-func EnableWeakCiphers() {
-	utlsSupportedCipherSuites = append(cipherSuites, []*cipherSuite{
+		// The following weak ciphersuites are enabled for maximum compatibility,
+		// given that we establish secure connections within the utls connection.
 		{DISABLED_TLS_RSA_WITH_AES_256_CBC_SHA256, 32, 32, 16, rsaKA,
 			suiteTLS12 | suiteDefaultOff, cipherAES, macSHA256, nil},
-
 		{DISABLED_TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, 32, 48, 16, ecdheECDSAKA,
 			suiteECDHE | suiteECDSA | suiteTLS12 | suiteDefaultOff | suiteSHA384, cipherAES, utlsMacSHA384, nil},
 		{DISABLED_TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, 32, 48, 16, ecdheRSAKA,
